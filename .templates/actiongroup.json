@@ -1,0 +1,43 @@
+{
+	"kind": "template",
+	"properties": {
+		"template": {
+      "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "AGAutomationAccountId": {
+          "type": "string"
+          }
+        },
+      "resources": [
+        {
+          "type": "Microsoft.Insights/actionGroups",
+          "apiVersion": "2019-06-01",
+          "name": "RemoveResources",
+          "location": "Global",
+          "properties": {
+            "groupShortName": "RRG",
+            "enabled": true,
+            "automationRunbookReceivers": [
+              {
+                "automationAccountId": "[parameters('AGAutomationAccountId')]",
+                "runbookName": "RemoveRG",
+                "isGlobalRunbook": false,
+                "useCommonAlertSchema": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+		"resourceGroup": "Project-Essentials",
+		"displayName": "ActionGroup",
+		"parameters": {
+      "AGAutomationAccountId": {
+        "value": "[artifacts('automationaccount').outputs.AutomationAccountId]"
+      }
+		},
+    "dependsOn": ["automationaccount", "runbook"]
+	},
+	"type": "Microsoft.Blueprint/blueprints/artifacts"
+}

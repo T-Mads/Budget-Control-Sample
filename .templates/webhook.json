@@ -1,0 +1,47 @@
+{
+	"kind": "template",
+	"properties": {
+		"template": {
+		  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		  "contentVersion": "1.0.0.0",
+		  "parameters": {
+		    "AAautomationAccountLocation": {
+		      "type": "string"
+		    },
+        "AAautomationAccountName":{
+          "type": "string"
+        }
+		  },
+		  "variables": {},
+      "resources": [{
+					"name": "[concat(parameters('AAautomationAccountName'),'/Webhook-RemoveRG')]",
+					"type": "Microsoft.Automation/automationAccounts/webhooks",
+					"apiVersion": "2015-10-31",
+					"properties": {
+						"isEnabled": true,
+						"uri": "",
+						"parameters": {
+							"NameFilter": "Project-Omega",
+							"PreviewMode": true
+						},
+						"runbook": {
+							"name": "RemoveRG"
+						}
+					}
+				}
+      ]
+		},
+		"resourceGroup": "Project-Essentials",
+		"displayName": "Webhook-RemoveRG",
+		"parameters": {
+			"AAautomationAccountLocation": {
+				"value": "[parameters('automationAccountLocation')]"
+			},
+      "AAautomationAccountName": {
+				"value": "[parameters('automationAccountName')]"
+			}
+		},
+    "dependsOn": ["automationaccount","runbook"]
+	},
+	"type": "Microsoft.Blueprint/blueprints/artifacts"
+}

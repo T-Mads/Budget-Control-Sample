@@ -1,0 +1,87 @@
+{
+    "properties": {
+        "description": "Application network blueprint",
+        "targetScope": "subscription",
+        "parameters": {
+            "AppNetwork_addressPrefixes": {
+                "type": "array",
+                "defaultValue": [
+                    "10.69.145.16/28",
+                    "10.69.159.176/28"
+                ]
+            },
+            "AppNetwork_dnsServers": {
+                "type": "array",
+                "defaultValue": [
+                    "10.50.50.50",
+                    "10.50.10.50"
+                ]
+            },
+            "AppNetwork_gatewayAddressPrefix": {
+                "type": "string",
+                "defaultValue": "10.69.159.176/28"
+            },
+            "AppNetwork_otherSubnetPrefix": {
+                "type": "string",
+                "defaultValue": "10.69.145.16/28"
+            },
+            "AppNetwork_requestId": {
+                "type": "string",
+                "defaultValue": "12345"
+            },
+            "AppNetwork_gatewaySubnetName": {
+                "type": "string",
+                "defaultValue": "GatewaySubnet-Contoso"
+            },
+            "AppNetwork_pipName": {
+                "type": "string",
+                "defaultValue": "PIP-Contoso"
+            },
+            "AppNetwork_subnetName": {
+                "type": "string",
+                "defaultValue": "Subnet-Contoso"
+            },
+            "AppNetwork_vnetName": {
+                "type": "string",
+                "defaultValue": "VNet-Contoso"
+            },
+            "AppNetwork_networkingRGName": {
+                "type": "string",
+                "defaultValue": "Networking-RG-Contoso",
+                "metadata": {
+                    "description": "The resource group where the ExpressRoute circuit is deployed"
+                }
+            },
+            "AppNetwork_vnetGatewayName": {
+                "type": "string",
+                "defaultValue": "VnetGateway-Contoso"
+            },
+            "AppNetwork_nsgName": {
+                "type": "string",
+                "defaultValue": "Nsg-Contoso"
+            },
+            "AppNetwork_costCenter": {
+                "type": "string",
+                "allowedValues": [
+                    "Contoso-Network",
+                    "Contoso-Infra",
+                    "Contoso-App"
+                ]
+            },
+            "contributors": {
+                "type": "string",
+                "metadata": {
+                    "strongType": "PrincipalId",
+                    "description": "Users, groups, or service principals with contributor access to this resource group"
+                }
+            }
+        },
+        "resourceGroups": {
+            "AppNetwork": {
+                "location": "westus2",
+                "name": "[parameters('AppNetwork_networkingRgName')]"
+            }
+        }
+    },
+    "type": "Microsoft.Blueprint/blueprints"
+}

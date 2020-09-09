@@ -15,7 +15,7 @@
 
 .LICENSEURI
 
-.PROJECTURI https://github.com/azureautomation/runbooks/blob/master/Utility/Remove-ResourceGroups.ps1
+.PROJECTURI https://github.com/T-Mads/Budget-Control-Sample/blob/master/RemoveRG.ps1
 
 .ICONURI
 

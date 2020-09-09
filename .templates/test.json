@@ -1,0 +1,21 @@
+	"resources": [{
+			"type": "runbooks",
+			"apiVersion": "2015-01-01-preview",
+			"name": "[parameters('sampleGraphicalRunbookName')]",
+			"location": "[parameters('automationAccountLocation')]",
+			"dependsOn": [
+				"[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+			],
+			"tags": {},
+			"properties": {
+				"runbookType": "GraphPowerShell",
+				"logProgress": "false",
+				"logVerbose": "false",
+				"description": "[parameters('sampleGraphicalRunbookDescription')]",
+				"publishContentLink": {
+					"uri": "[parameters('sampleGraphicalRunbookContentUri')]",
+					"version": "1.0.0.0"
+				}
+			}
+		}
+	]

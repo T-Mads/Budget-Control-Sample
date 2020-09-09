@@ -1,0 +1,54 @@
+{
+	"kind": "template",
+	"properties": {
+		"template": {
+		  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		  "contentVersion": "1.0.0.0",
+		  "parameters": {
+		    "AAautomationAccountLocation": {
+		      "type": "string",
+		    },
+        "AAautomationAccountName":{
+          "type": "string"
+        }
+		  },
+		  "variables": {},
+      "resources": [{
+          "type": "Microsoft.Automation/automationAccounts/runbooks",
+          "apiVersion": "2018-06-30",
+          "name": "[concat(parameters('AAautomationAccountName'),'/RemoveRG')]",
+          "location": "[parameters('AAautomationAccountLocation')]",
+          "tags": {},
+          "properties": {
+            "runbookType": "PowerShellWorkflow",
+            "logProgress": "false",
+            "logVerbose": "false",
+            "description": "This runbook uses RegEx to match a name of a resource group and then deletes said resource group.",
+            "publishContentLink": {
+              "uri": "https://raw.githubusercontent.com/azureautomation/runbooks/master/Utility/ARM/Remove-ResourceGroup.ps1",
+              "version": "1.0.0.0"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "RunbookId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Automation/automationAccounts/runbooks', 'RemoveRG')]"
+        }
+      }
+		},
+		"resourceGroup": "Project-Essentials",
+		"displayName": "Runbook-RemoveRG",
+		"parameters": {
+			"AAautomationAccountLocation": {
+				"value": "[parameters('automationAccountLocation')]"
+			},
+      "AAautomationAccountName": {
+				"value": "[parameters('automationAccountName')]"
+			}
+		},
+    "dependsOn": ["automationaccount"]
+	},
+	"type": "Microsoft.Blueprint/blueprints/artifacts"
+}

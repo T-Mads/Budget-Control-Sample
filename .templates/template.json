@@ -1,0 +1,29 @@
+{
+    "kind": "template",
+    "properties": {
+      "dependsOn": [],
+      "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "myTemplateParameter": {
+              "type": "string",
+              "metadata": {
+                "displayName": "single template parameter"
+              }
+            }
+          },
+          "variables": {},
+          "resources": []
+      },
+      "resourceGroup": "Project-Essentials",
+      "displayName": "My ARM Template",
+      "parameters": {
+        "myTemplateParameter": {
+          "value": "[concat(parameters('genericBlueprintParameter'),'test')]"
+        }
+      }
+    },
+    "type": "Microsoft.Blueprint/blueprints/artifacts",
+    "name": "myTemplate"
+}

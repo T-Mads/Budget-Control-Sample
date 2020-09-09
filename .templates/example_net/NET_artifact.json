@@ -1,0 +1,97 @@
+{
+    "kind": "template",
+    "properties": {
+        "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+                "gatewaySubnetName": {
+                    "type": "string"
+                },
+                "subnetName": {
+                    "type": "string"
+                },
+                "pipName": {
+                    "type": "string"
+                },
+                "vnetName": {
+                    "type": "string"
+                },
+                "vnetGatewayName": {
+                    "type": "string"
+                }
+            },
+            "variables": {
+                "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "gatewaySubnet": "[concat(variables('vnetId'),'/subnets/','GatewaySubnet')]"
+            },
+            "resources": [{
+                "type": "Microsoft.Network/virtualNetworkGateways",
+                "name": "[parameters('vnetGatewayName')]",
+                "apiVersion": "2018-08-01",
+                "location": "westus2",
+                "tags": {
+                    "RequestID": "8171"
+                },
+                "properties": {
+                    "ipConfigurations": [{
+                        "name": "SEALSNZ-IPCFG-8171",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('gatewaySubnet')]"
+                            }
+                        }
+                    }],
+                    "sku": {
+                        "name": "Standard",
+                        "tier": "Standard",
+                        "capacity": 2
+                    },
+                    "gatewayType": "ExpressRoute",
+                    "vpnType": "RouteBased",
+                    "enableBgp": false,
+                    "activeActive": false,
+                    "vpnClientConfiguration": {
+                        "vpnClientProtocols": [
+                            "SSTP",
+                            "IkeV2"
+                        ],
+                        "vpnClientRootCertificates": [
+
+                        ],
+                        "vpnClientRevokedCertificates": [
+
+                        ],
+                        "vpnClientIpsecPolicies": [
+
+                        ]
+                    }
+                }
+            }]
+        },
+        "resourceGroup": "AppNetwork",
+        "parameters": {
+            "gatewaySubnetName": {
+                "value": "[parameters('AppNetwork_gatewaySubnetName')]"
+            },
+            "subnetName": {
+                "value": "[parameters('AppNetwork_subnetName')]"
+            },
+            "pipName": {
+                "value": "[parameters('AppNetwork_pipName')]"
+            },
+            "vnetName": {
+                "value": "[parameters('AppNetwork_vnetName')]"
+            },
+            "vnetGatewayName": {
+                "value": "[parameters('AppNetwork_vnetGatewayName')]"
+            }
+        },
+        "dependsOn": ["pip"]
+    },
+    "type": "Microsoft.Blueprint/blueprints/artifacts"
+}

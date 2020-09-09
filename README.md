@@ -1,5 +1,5 @@
 # Budget Control within Azure
-Controlling costs within Azure can sometimes seem confusing which might lead to misunderstandings. This project aims to give a basic overview of the cost and budget structure within Azure as well as giving tools to control costs in a exact manner through alerts and ultimately shut down of resources.
+Controlling costs within Azure can sometimes seem confusing which might lead to misunderstandings. This project aims to give a basic overview of the cost and budget structure within Azure as well as giving tools to control costs in an exact manner through alerts and ultimately shut down of resources.
 
 ## Table of contents
 - [Budget Control](#budget-control)
@@ -18,21 +18,21 @@ Controlling costs within Azure can sometimes seem confusing which might lead to 
 
 
 ## Budget Control
-Sometimes a project will have a fixed spending limit and in order to use cloud computing it will be important to comply with said spending limit. In order to facilitate that several components within Azure can be utilized for free:
-* Budgets allows the user to configure several events which occur at certain limits. A typical event is sending a mail to notify a certain limit has been crossed. An event can however also trigger action groups which allow even more advanced actions to trigger.
+Sometimes a project will have a fixed spending limit and in order to use cloud computing, it will be important to comply with said spending limit. In order to facilitate that several components within Azure can be utilized for free:
+* Budgets allow the user to configure several events that occur at certain limits. A typical event is sending a mail to notify a certain limit has been crossed. An event can however also trigger action groups that allow even more advanced actions to trigger.
 * Action groups allow for specific predetermined actions to be triggered when they are called from a budget. A useful action group can for example remove a resource group in order to immediately stop spending. This ensures compliance with a spending limit. Another use can be to send an SMS or turn off services within Azure.
 
 These components are part of the Cost Management and Billing module within Azure, you can read more in the official [documentation](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/).
 ### Budgets
-Budgets within Azure are connected to a scope and provide an overview over expenses in that scope. A scope in Azure is a grouping of resources, in short there are three different levels here listed according to hierarchy: *Management Group*, *Subscription* and *Resource Group*. For more information on scopes view the official [documentation](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/understand-work-scopes). A budget allows granular control of expenses of spending within these scopes for hands-on experience please check out the following official [tutorial](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets).
+Budgets within Azure are connected to a scope and provide an overview of expenses in that scope. A scope in Azure is a grouping of resources, in short, there are three different levels here listed according to hierarchy: *Management Group*, *Subscription*, and *Resource Group*. For more information on scopes view the official [documentation](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/understand-work-scopes). A budget allows granular control of expenses of spending within these scopes for hands-on experience please check out the following official [tutorial](https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets).
 
 ### Action Groups
-Action groups are collections of actions which can be triggered through the group. There is a variety of different actions that can be triggered from notifications to PowerShell scripts. Specifically triggering scripts, called runbooks, is of great interest since these allow for a high degree of control, from removing resources, making new deployments or automizing tasks.
+Action groups are collections of actions that can be triggered through the group. There is a variety of different actions that can be triggered from notifications to PowerShell scripts. Specifically triggering scripts, called runbooks, is of great interest since these allow for a high degree of control, from removing resources, making new deployments, or automizing tasks.
 
 In order to view and create action groups navigate to **Alerts -> Manage actions**. Also for more information refer to the following [guide](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/action-groups).
 
 #### Runbooks
-Runbooks are scripts which are kept within Azure that through an [Automation Account](https://docs.microsoft.com/en-us/azure/automation/automation-quickstart-create-account) can be run in Azure. These scripts can perform a variety of actions. The scripts can be written in several different programming languages for the full capabilities refer to the [documentation](https://docs.microsoft.com/en-us/azure/automation/automation-runbook-types). A useful runbook for controlling costs is one which can remove a specific resource group by matching its name exactly, this runbook is included in this project in the form of [RemoveRG.ps1](./RemoveRG.ps1).
+Runbooks are scripts which are kept within Azure that through an [Automation Account](https://docs.microsoft.com/en-us/azure/automation/automation-quickstart-create-account) can be run in Azure. These scripts can perform a variety of actions. The scripts can be written in several different programming languages for the full capabilities refer to the [documentation](https://docs.microsoft.com/en-us/azure/automation/automation-runbook-types). A useful runbook for controlling costs is one that can remove a specific resource group by matching its name exactly, this runbook is included in this project in the form of [RemoveRG.ps1](./RemoveRG.ps1).
 
 ### Recommended Control Structure
 This is a recommendation of how to combine the technologies within Azure to create a good basis for cost control. **Note** this is only a recommendation and you might find several ways to improve it for your project.
@@ -44,28 +44,28 @@ The above control structure is the one that is provided by the blueprint in this
 **Note** you can consider placing storage in the *Project-Essentials* resource group so when the spending limit is reached the storage/data is not deleted.
 
 ### Alert Flow
-This section will introduce how the different resources are combined in order to stop spending.
+This section will introduce how different resources are combined in order to stop spending.
 
 1. When the spending limit specified in the budget is reached an alert is triggered.
 2. This alert triggers an action group which causes the RunAs Account to run a specific runbook.
-3. The runbook, in this case "RemoveRG" is started:
+3. The runbook, in this case, "RemoveRG" is started:
   4. The runbook finds the resource group matching the name given, $Name
-  5. The runbook deletes the resource group that it found, which destroys all related resources
+  5. The runbook deletes the resource group that is found, which destroys all related resources
 
 **Notice** the budget is checked every 12-14 hours, this means that alerts will only be triggered every 12-14 hours. You should therefore be aware that the deletion of the Resource Group might not happen immediately after the alert condition is achieved.
 
 ![Visualization of process flow during tear down](./images/RG_delete_flow.png)
 
 ## This project
-This project aims to automatize as much of the budget creation process as possible. There are several steps which must still be done manually but using this template will create budgets with the advised budget structure and allows for quick reconfiguration. In order to do this automatically [blueprints](https://docs.microsoft.com/en-us/azure/governance/blueprints/overview) are used, a blueprint is a template which can be deployed within Azure, when filled in it will automatically create the resources required. By assigning the blueprint created through the following section the recommended control structure will be deployed to subscription. This means the following resources are created:
+This project aims to automatize as much of the budget creation process as possible. There are several steps that must still be done manually but using this template will create budgets with the advised budget structure and allows for quick reconfiguration. In order to do this automatically [blueprints](https://docs.microsoft.com/en-us/azure/governance/blueprints/overview) are used, a blueprint is a template which can be deployed within Azure, when filled in it will automatically create the resources required. By assigning the blueprint created through the following section the recommended control structure will be deployed to subscription. This means the following resources are created:
 * **Resource Group**: Project-XX-Essentials
   * **Automation Account**: RunbookAutomater
   * **Runbook**: RemoveRG (removes Resource Group of a given name)
   * **Action Group**: RemoveResourceGs
-* **Resource Group**: Project-XX-Resorces
+* **Resource Group**: Project-XX-Resources
   * **Budget**: project-budget
 
-**Note** most of the names can be changed but use the default values above. Furthermore the region of the deployment can also be configured.
+**Note** most of the names can be changed but use the default values above. Furthermore, the region of the deployment can also be configured.
 
 
 ## Installation
@@ -97,9 +97,9 @@ When the blueprint has been imported to Azure by following the above instruction
 * **Project-$projectName-Resources/Location**: Location of the resource group.
   * **Project-Budget/Amount**: This is the total amount of the budget, notice the currency will be the type that you use in Azure, ex. DKK or US. Note you can always change this value at a later point.
   * **Project-Budget/timeGrain**: This determines the resolution of the budget whether it is a monthly, quarterly or yearly budget.
-  * **Project-Budget/startDate**: The start date must be first of the month in YYYY-MM-DD format. Future start date should not be more than three months. Past start date should be selected within the timegrain period.
-  * **Project-Budget/endDate**: The end date of the budget formatted as YYYY-MM-DD. This will determine how long the budget is active.
-  * **Project-Budget/contactEmails**: This is a list of emails which should be notified when an alert is triggered (a threshold is passed).
+  * **Project-Budget/startDate**: The start date must be the first of the month in YYYY-MM-DD format. Future start date should not be more than three months. Past start date should be selected within the timegrain period.
+  * **Project-Budget/endDate**: The end date of the budget is formatted as YYYY-MM-DD. This will determine how long the budget is active.
+  * **Project-Budget/contactEmails**: This is a list of emails that should be notified when an alert is triggered (a threshold is passed).
 * **Project-$projectName-Essentials/Location**: Location of the resource group.
   * **RunbookAutomater/automationAccountLocation**: Location of the automation account.
   * **RunbookAutomater/automationAccountName**: The name of the automation account. **Note** this name must be unique amongst automation accounts in the same subscription else an error is thrown at assignment.
@@ -113,17 +113,17 @@ While most of the infrastructure can be deployed using the blueprint two compone
 
 Notice you can test the runbook
 #### Setting up Run As Account
-In order to give the Automation Account the privilege to execute different runbooks automatically we must first configure a Run As Account. This is done by configuring the Automation Account and going to **account settings -> Run as account**. Here setup a Azure Run As Account.
+In order to give the Automation Account the privilege to execute different runbooks automatically, we must first configure a Run As Account. This is done by configuring the Automation Account and going to **account settings -> Run as account**. Here setup a Azure Run As Account.
 
 The image below illustrates the different buttons in the Azure portal.
 ![Run As Setup](./images/runassetup.png)
 
 #### Configure Action Group
-In order to have the action group we deployed using the blueprint run the runbook which removes the resource we have to configure it. First start by finding the action group in **Alerts -> Manage actions** as depicted below.
+In order to have the action group, we deployed using the blueprint run the runbook which removes the resource we have to configure it. First, start by finding the action group in **Alerts -> Manage actions** as depicted below.
 
 ![Manage actions overview](./images/manageactions.png)
 
-In the manage action view find the action group you want to alter. In this case the group **RemoveResources** in the resource group Project-$Name-Resources. Next configure this action group here add a **runbook** action to the **actions** tab as seen below.
+In the manage action view find the action group you want to alter. In this case the group **RemoveResources** in the resource group Project-$Name-Resources. Next, configure this action group here add a **runbook** action to the **actions** tab as seen below.
 
 ![Edit action group](./images/editactiongroup.png)
 
@@ -131,13 +131,13 @@ When the runbook has been selected you will be prompted to select a runbook and 
 
 ![Webhook](./images/setupwebhook.png)
 #### [Optional] Testing the runbook
-The runbook can be tested by navigating to the created Automation Account and finding the runbook tab. Here the different runbooks will be listed among these the RemoveRG runbook will occur. The runbok can then be tested by pressing start and supplying a name.
+The runbook can be tested by navigating to the created Automation Account and finding the runbook tab. Here the different runbooks will be listed among these the RemoveRG runbook will occur. The runbook can then be tested by pressing start and supplying a name.
 
 ![Webhook](./images/runbooktest.png)
 
-**Note** the runbook can be ran in preview mode where it will output what resources would be deleted but not delete them. This is a good way to test that everything works as expected. Also remember to have the Automation Account configured with Run As.
+**Note** the runbook can be run in preview mode where it will output what resources would be deleted but not delete them. This is a good way to test that everything works as expected. Also remember to have the Automation Account configured with Run As.
 ## Troubleshooting
-If you experience problems feel free to open an issue. We will attempt to respond as soon as possible. Do however note that the project is offered under MIT license and that response time might vary.
+If you experience problems feel free to open an issue. The project is not monitored frequently and long waiting times might occur. You are also welcome to contribute with answers to another persons issue.
 
 ## Read More
 Budgets in Azure: https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets
@@ -152,8 +152,9 @@ Commons Attribution 4.0 International Public
 License](https://creativecommons.org/licenses/by/4.0/legalcode), see
 the [LICENSE](LICENSE) file, and grant you a license to any code in
 the repository under the [MIT
-License](https://opensource.org/licenses/MIT), see the
-[LICENSE-CODE](LICENSE-CODE) file.
+License](https://opensource.org/licenses/MIT). **This license means that the
+author is in no way, shape or form responsible for your use of the code or
+any consequences thereof including billing occurring when using the code.**
 
 Microsoft, Windows, Microsoft Azure and/or other Microsoft products
 and services referenced in the documentation may be either trademarks
@@ -165,6 +166,6 @@ http://go.microsoft.com/fwlink/?LinkID=254653.
 
 Privacy information can be found at https://privacy.microsoft.com/en-us/
 
-Microsoft and any contributors reserve all others rights, whether
+Microsoft and any contributors reserve all other rights, whether
 under their respective copyrights, patents, or trademarks, whether by
-implication, estoppel or otherwise.
+implication, estoppel, or otherwise.

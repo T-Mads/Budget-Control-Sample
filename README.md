@@ -152,9 +152,7 @@ Commons Attribution 4.0 International Public
 License](https://creativecommons.org/licenses/by/4.0/legalcode), see
 the [LICENSE](LICENSE) file, and grant you a license to any code in
 the repository under the [MIT
-License](https://opensource.org/licenses/MIT). **This license means that the
-author is in no way, shape or form responsible for your use of the code or
-any consequences thereof including billing occurring when using the code.**
+License](https://opensource.org/licenses/MIT).
 
 Microsoft, Windows, Microsoft Azure and/or other Microsoft products
 and services referenced in the documentation may be either trademarks
@@ -169,3 +167,5 @@ Privacy information can be found at https://privacy.microsoft.com/en-us/
 Microsoft and any contributors reserve all other rights, whether
 under their respective copyrights, patents, or trademarks, whether by
 implication, estoppel, or otherwise.
+
+For the sake of good order, Microsoft will assume no cost or legally binding obligations in connection with this content. Furthermore Microsoft does not constitute a guarantee or endorsement regarding the services provided by using this content.

@@ -167,5 +167,3 @@ Privacy information can be found at https://privacy.microsoft.com/en-us/
 Microsoft and any contributors reserve all other rights, whether
 under their respective copyrights, patents, or trademarks, whether by
 implication, estoppel, or otherwise.
-
-For the sake of good order, Microsoft will assume no cost or legally binding obligations in connection with this content. Furthermore Microsoft does not constitute a guarantee or endorsement regarding the services provided by using this content.
